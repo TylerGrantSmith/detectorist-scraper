@@ -1,7 +1,7 @@
 import datetime
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for detectorists project
+# Scrapy settings for ao project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -10,17 +10,17 @@ import datetime
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'detectorists'
+BOT_NAME = 'ao'
 
-SPIDER_MODULES = ['detectorists.spiders']
-NEWSPIDER_MODULE = 'detectorists.spiders'
+SPIDER_MODULES = ['ao.spiders']
+NEWSPIDER_MODULE = 'ao.spiders'
 
 # Spider persistence
 JOBDIR = 'job_state'
 
 # MongoDB settings
 MONGO_URI = 'mongodb://localhost:27017/'
-MONGO_DATABASE = 'detectorists'
+MONGO_DATABASE = 'ao'
 
 # fix annoying S3 error message bug
 DOWNLOAD_HANDLERS = {'s3': None,}
@@ -29,7 +29,7 @@ DOWNLOAD_HANDLERS = {'s3': None,}
 LOG_FILE = '%sdetect.log' % (datetime.datetime.now().strftime('%Y_%m_%d__%H_%M'))
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'detectorists (+http://www.yourdomain.com)'
+#USER_AGENT = 'ao (+http://www.yourdomain.com)'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS=32
@@ -57,13 +57,13 @@ TELNETCONSOLE_ENABLED=True
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'detectorists.middlewares.MyCustomSpiderMiddleware': 543,
+#    'ao.middlewares.MyCustomSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'detectorists.middlewares.MyCustomDownloaderMiddleware': 543,
+#    'ao.middlewares.MyCustomDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -75,7 +75,7 @@ TELNETCONSOLE_ENABLED=True
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'detectorists.pipelines.MongoPipeline': 300,
+    'ao.pipelines.MongoPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

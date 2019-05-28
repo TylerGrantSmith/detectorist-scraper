@@ -6,14 +6,14 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 
-# class DetectoristsPipeline(object):
+# class aoPipeline(object):
 #     def process_item(self, item, spider):
 #         return item
 
 import pymongo
 import datetime
 from scrapy.exceptions import DropItem
-from detectorists.items import PostItem, UserItem, ThreadItem
+from ao.items import PostItem, UserItem, ThreadItem
 
 # Adapted from
 # http://doc.scrapy.org/en/stable/topics/item-pipeline.html#write-items-to-mongodb

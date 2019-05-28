@@ -20,15 +20,25 @@ class PostItem(scrapy.Item):
     unique_fields = ['thread_id','post_no']
 
     thread_id = scrapy.Field()
+    post_id = scrapy.Field()
     user_id = scrapy.Field()
+
+    post_no = scrapy.Field()    
     timestamp = scrapy.Field()
     message = scrapy.Field()
     quotes = scrapy.Field()
-    post_no = scrapy.Field()
-    # post_no is shown on upper right of each post container.
 
-    # post_id is '202020' in the last part of URL: http://metaldetectingforum.com/showpost.php?p=202020
-    # But I'm not using post_id right now.
+class MessageItem(scrapy.Item):
+    post_id = scrapy.Field()
+    user_id = scrapy.Field()
+    text = scrapy.Field()
+    quotes = scrapy.Field()
+
+class QuoteItem(scrapy.Item):
+    user_name = scrapy.Field()
+    post_id = scrapy.Field()
+    text = scrapy.Field()
+    quotes = scrapy.Field()
 
 class UserItem(scrapy.Item):
     collection = 'user'
@@ -41,6 +51,17 @@ class ThreadItem(scrapy.Item):
     collection = 'thread'
     unique_fields = ['thread_id']
 
+    forum_id = scrapy.Field()
     thread_id = scrapy.Field()
     thread_name = scrapy.Field()
-    thread_path = scrapy.Field()
+    thread_title = scrapy.Field()
+    thread_link = scrapy.Field()
+
+class ForumItem(scrapy.Item):
+    collection = 'forum'
+    unique_fields = ['forum_id']
+
+    forum_id = scrapy.Field()
+    forum_name = scrapy.Field()
+    forum_link = scrapy.Field()
+    forum_path = scrapy.Field()
