@@ -1,7 +1,6 @@
 import scrapy
 from scrapy.linkextractors import LinkExtractor
 import re
-from ao.processors import to_int
 from ao.items import PostItem, UserItem, ThreadItem, ForumItem, MessageItem, QuoteItem
 from ao.loaders import PostLoader, UserLoader, ThreadLoader, ForumLoader, MessageLoader, QuoteLoader
 import logging
@@ -25,38 +24,38 @@ class ActuarialOutpostSpider(scrapy.Spider):
         'quotes':    '(/div[text()="Quote:"])/following::div[1]'
     }
 
-    def _get_quote(self, response, quote):
-        ql = QuoteLoader(response=response)
-        ql.selector = quote
-        ql.add_xpath('user_name', './/strong/text()')
-        ql.add_xpath('post_id', './/a/@href', re = self.patterns['post_id'])
-        ql.add_value('text', '')
+    def _get_quote(self, quote):
+        ql = QuoteLoader(selector=quote)
+        ql.add_xpath('user_name', './tr/td/div/strong/text()')
+        ql.add_xpath('post_id', './tr/td/div/a/@href', re = self.patterns['post_id'])
+        ql.add_xpath('text', './tr/td/div[2]/text()')
+        
         return dict(ql.load_item())
 
-    def _get_message(self, response, post):
-        ml = MessageLoader(response=response)
-        ml.selector = post.xpath('.//div[contains(@id, "post_message_")]')
-        ml.add_xpath('text', './/text()')
-        for quote in post.xpath('.//div[text() = "Quote:"]/following-sibling::table'):
-            ml.add_value('quotes', self._get_quote(response, quote))
+    def _get_message(self, post):
+        ml = MessageLoader(selector=post)
+        ml.selector = ml.selector.xpath('.//div[contains(@id, "post_message_")]')
+        ml.add_xpath('text', './text()')
+
+        for quote in ml.selector.xpath('./div/table[preceding-sibling::div/text() = "Quote:"]'):
+            ml.add_value('quotes', self._get_quote(quote))
+        
         return ml.load_item()
 
     def _get_post( self, response, post):
-        pl = PostLoader(response=response)
-        pl.selector = post
+        pl = PostLoader(selector=post)
         pl.add_value('thread_id', response.url, re = self.patterns['thread_id'])
         pl.add_xpath('post_id', ".//a[@target='new']/@href", re = self.patterns['post_id'])
         pl.add_xpath('post_no', ".//a[@target='new']/@href", re = self.patterns['post_no'])
-        pl.add_xpath('user_id', ".//a[@class='bigusername']/@href", re = self.patterns['user_id'])
-        #pl.add_xpath('message', ".//*[contains(@id,'post_message_')]")
-        pl.add_value('message', self._get_message(response, post))
+        pl.add_xpath('user_name', './/div[starts-with(@id, "postmenu") and not(./@class="vbmenu_popup")]//text()')
+        pl.add_xpath('user_id', './/div[starts-with(@id, "postmenu") and not(./@class="vbmenu_popup")]/a/@href', re = self.patterns['user_id'])
+        pl.add_value('message', self._get_message(post))
         return pl.load_item()
 
-    def _get_user_from_post(self, response, post):
-        ul = UserLoader(response=response)
-        ul.selector = post
-        ul.add_xpath('user_id',   ".//a[@class='bigusername']/@href", re = self.patterns['user_id'])
-        ul.add_xpath('user_name', ".//a[@class='bigusername']//text()")
+    def _get_user_from_post(self, post):
+        ul = UserLoader(selector=post)
+        ul.add_xpath('user_id',   './/div[starts-with(@id, "postmenu") and not(./@class="vbmenu_popup")]/a/@href', re = self.patterns['user_id'])
+        ul.add_xpath('user_name', './/div[starts-with(@id, "postmenu") and not(./@class="vbmenu_popup")]//text()')
         return ul.load_item()
 
     def parse_quote(self, response):
@@ -111,7 +110,9 @@ class ActuarialOutpostSpider(scrapy.Spider):
         yield self._get_thread(response)
 
         for post in response.xpath("//table[contains(@id,'post')]"):
-            yield self._get_user_from_post(response, post)
+            logging.info("SCRAPING USER")
+            yield self._get_user_from_post(post)
+            logging.info("SCRAPING POST")
             yield self._get_post(response, post)
             
         # return the next thread page if it exists

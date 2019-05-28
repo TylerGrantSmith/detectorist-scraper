@@ -9,3 +9,7 @@ def to_int(s, fallback=0):
         result = fallback
 
     return result
+
+def or_zero(value):
+    return value or 0
+    

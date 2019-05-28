@@ -15,6 +15,15 @@ import scrapy
 # if & only if ALL unique_fields match an existing document,
 # the current item is not added to the database.
 
+class ForumItem(scrapy.Item):
+    collection = 'forum'
+    unique_fields = ['forum_id']
+
+    forum_id = scrapy.Field()
+    forum_name = scrapy.Field()
+    forum_link = scrapy.Field()
+    forum_path = scrapy.Field()
+
 class PostItem(scrapy.Item):
     collection = 'post'
     unique_fields = ['thread_id','post_no']
@@ -57,11 +66,5 @@ class ThreadItem(scrapy.Item):
     thread_title = scrapy.Field()
     thread_link = scrapy.Field()
 
-class ForumItem(scrapy.Item):
-    collection = 'forum'
-    unique_fields = ['forum_id']
-
-    forum_id = scrapy.Field()
-    forum_name = scrapy.Field()
-    forum_link = scrapy.Field()
-    forum_path = scrapy.Field()
+class ImageItem(scrapy.Item):
+    collection = 'image'

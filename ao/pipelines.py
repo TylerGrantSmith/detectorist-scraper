@@ -14,7 +14,7 @@ import pymongo
 import datetime
 from scrapy.exceptions import DropItem
 from ao.items import PostItem, UserItem, ThreadItem
-
+import logging
 # Adapted from
 # http://doc.scrapy.org/en/stable/topics/item-pipeline.html#write-items-to-mongodb
 
@@ -45,10 +45,10 @@ class MongoPipeline(object):
     def process_item(self, item, spider):
         # filter based on item's unique fields
         filter_dict = {key: item[key] for key in item if key in item.unique_fields}
-
-        # append a "last_modified" datetime field.
+        
         insert_dict = dict(item)
-        insert_dict.update({"last_modified": datetime.datetime.utcnow()})
+
+        #insert_dict.update({"last_modified": datetime.datetime.utcnow()})
 
         # update or insert (aka "upsert") with the $set field update operator
         self.db[item.collection].update_one(filter_dict, {'$set':insert_dict}, upsert=True)
@@ -61,3 +61,8 @@ class MongoPipeline(object):
         #     # not a duplicate, add it
         #     self.db[item.collection].insert(insert_dict)
         return item
+
+# class SetDefaultPipeline(object):
+#     def process_item(self, item, spider):
+#         filter_dict = {key: item[key] for key in item if key in item.unique_fields}
+
