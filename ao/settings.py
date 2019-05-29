@@ -46,7 +46,7 @@ LOG_FILE = '%sdetect.log' % (datetime.datetime.now().strftime('%Y_%m_%d__%H_%M')
 COOKIES_ENABLED=False
 
 # Disable Telnet Console (enabled by default)
-TELNETCONSOLE_ENABLED=True
+TELNETCONSOLE_ENABLED=False
 
 # Override the default request headers:
 #DEFAULT_REQUEST_HEADERS = {
