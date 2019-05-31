@@ -16,7 +16,7 @@ SPIDER_MODULES = ['ao.spiders']
 NEWSPIDER_MODULE = 'ao.spiders'
 
 # Spider persistence
-JOBDIR = 'job_state'
+JOBDIR = 'crawls/ao'
 
 # MongoDB settings
 MONGO_URI = 'mongodb://localhost:27017/'
@@ -27,9 +27,11 @@ DOWNLOAD_HANDLERS = {'s3': None,}
 
 # logging options
 LOG_FILE = '%sdetect.log' % (datetime.datetime.now().strftime('%Y_%m_%d__%H_%M'))
+CLOSESPIDER_ERRORCOUNT = 1
+DUPEFILTER_DEBUG=True
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'ao (+http://www.yourdomain.com)'
+USER_AGENT = 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS=32
@@ -43,8 +45,8 @@ LOG_FILE = '%sdetect.log' % (datetime.datetime.now().strftime('%Y_%m_%d__%H_%M')
 #CONCURRENT_REQUESTS_PER_IP=16
 
 # Disable cookies (enabled by default)
-COOKIES_ENABLED=False
-
+COOKIES_ENABLED=True
+COOKIES_DEBUG=False
 # Disable Telnet Console (enabled by default)
 TELNETCONSOLE_ENABLED=False
 
@@ -88,6 +90,9 @@ AUTOTHROTTLE_START_DELAY=4
 AUTOTHROTTLE_MAX_DELAY=60
 # Enable showing throttling stats for every response received:
 AUTOTHROTTLE_DEBUG=False
+# Be aggressive
+AUTOTHROTTLE_TARGET_CONCURRENCY = 2.0
+
 
 # Enable and configure HTTP caching (disabled by default)
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings

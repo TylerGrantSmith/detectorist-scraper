@@ -1,6 +1,9 @@
-*.pyc
+*.py[cod]
 *.json
 *.ipynb
 .ipynb_checkpoints/
 *.log
 job_state/*
+crawls/*
+__pycache__/
+spiders/__pycache__/*

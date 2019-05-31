@@ -8,13 +8,17 @@ class ForumLoader(ItemLoader):
     default_item_class = ForumItem   
     default_output_processor = TakeFirst()
     forum_id_in = MapCompose(to_int)
-    forum_name_out = Compose(MapCompose(str.strip), Join(separator=' > '))
+    forum_path_out = Identity()
+    forum_path_in = MapCompose(to_int)
+    #forum_path_out = Join(separator=' > ')
+    forum_name_in = MapCompose(str.strip)
 
 class PostLoader(ItemLoader):
     default_item_class = PostItem   
     default_output_processor = TakeFirst()
 
     thread_id_in = MapCompose(to_int)
+    user_name_in = MapCompose(str.strip, Join(''))
     user_id_in = MapCompose(to_int)
     post_id_in = MapCompose(to_int)
     post_no_in = MapCompose(to_int)
@@ -38,8 +42,7 @@ class ThreadLoader(ItemLoader):
 class UserLoader(ItemLoader):
     default_item_class = UserItem   
     default_output_processor = TakeFirst()
-    user_name_in = MapCompose(str.strip)
-    user_name_out = Join()
+    user_name_in = MapCompose(str.strip, Join(''))
     user_id_in = MapCompose(to_int, or_zero)
 
 class QuoteLoader(ItemLoader):

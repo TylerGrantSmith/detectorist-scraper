@@ -47,7 +47,7 @@ class MongoPipeline(object):
         filter_dict = {key: item[key] for key in item if key in item.unique_fields}
         
         insert_dict = dict(item)
-
+        
         #insert_dict.update({"last_modified": datetime.datetime.utcnow()})
 
         # update or insert (aka "upsert") with the $set field update operator

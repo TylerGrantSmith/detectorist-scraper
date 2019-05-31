@@ -31,7 +31,7 @@ class PostItem(scrapy.Item):
     thread_id = scrapy.Field()
     post_id = scrapy.Field()
     user_id = scrapy.Field()
-
+    user_name = scrapy.Field()
     post_no = scrapy.Field()    
     timestamp = scrapy.Field()
     message = scrapy.Field()
